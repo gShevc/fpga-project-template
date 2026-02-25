@@ -29,7 +29,7 @@ top = "<name>_tb"
 sources = ["tb/<name>_tb.sv"]
 verilator_flags = []
 
-python fpga.py sim
+python fpga.py sim -m <"Module">
 python fpga.py sim --trace
 python fpga.py sim --trace-fst
 python fpga.py sim --clean --trace
@@ -39,5 +39,6 @@ python fpga.py lint
 python scripts/build.py impl
 python scripts/build.py bit
 python scripts/build.py synth --gui
+
 
 

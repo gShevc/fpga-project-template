@@ -75,13 +75,18 @@ def cmd_bit(args):
 
 def cmd_clean(args):
     root = Path(__file__).resolve().parent
+    # Clean build/
+    build_dir = root / "build"
+    if build_dir.exists():
+        shutil.rmtree(build_dir)
+        print("Removed build/")
     # Clean impl/
     impl_dir = root / "impl"
     if impl_dir.exists():
         shutil.rmtree(impl_dir)
         print("Removed impl/")
     impl_dir.mkdir(exist_ok=True)
-    # Clean sim/ directories inside each module
+    # Clean sim/ directories inside each module (waveforms)
     for sim_dir in (root / "hdl").rglob("sim"):
         if sim_dir.is_dir():
             shutil.rmtree(sim_dir)

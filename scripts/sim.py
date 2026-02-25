@@ -91,9 +91,18 @@ def main():
     )
 
     mod_dir = sim["mod_dir"]
+    # Build artifacts (compiled objects, generated C++) go under build/
+    build_dir = root / "build" / "sim" / module_name / args.target
+    # Waveform output stays under the module's sim/ directory
     sim_dir = mod_dir / "sim" / args.target
-    if args.clean and sim_dir.exists():
-        shutil.rmtree(sim_dir)
+
+    if args.clean:
+        if build_dir.exists():
+            shutil.rmtree(build_dir)
+        if sim_dir.exists():
+            shutil.rmtree(sim_dir)
+
+    build_dir.mkdir(parents=True, exist_ok=True)
     sim_dir.mkdir(parents=True, exist_ok=True)
 
     # Build Verilator command
@@ -105,7 +114,7 @@ def main():
         cmd += ["--binary"]
 
     cmd += ["-sv", "--top-module", top]
-    cmd += ["-Mdir", str(sim_dir)]
+    cmd += ["-Mdir", str(build_dir)]
 
     if args.trace:
         cmd += ["--trace"]
@@ -118,14 +127,14 @@ def main():
     cmd += extra_flags
     cmd += [str(s) for s in sources]
 
-    run(cmd, cwd=sim_dir)
+    run(cmd, cwd=build_dir)
 
     if args.lint_only:
         print("Lint passed.")
         return
 
-    # Run the compiled binary
-    binary = sim_dir / f"V{top}"
+    # Run the compiled binary from the sim dir so waveforms land there
+    binary = build_dir / f"V{top}"
     if os.name == "nt":
         binary = binary.with_suffix(".exe")
 

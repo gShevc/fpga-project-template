@@ -1,0 +1,23 @@
+[module]
+name = "top"
+
+[rtl]
+sources = [
+    "src/top.sv",
+]
+include_dirs = []
+
+[deps]
+modules = []
+
+[constraints]
+files = [
+    "constraints/pins.xdc",
+]
+
+[sim.default]
+top = "top_tb"
+sources = [
+    "tb/top_tb.sv",
+]
+verilator_flags = []

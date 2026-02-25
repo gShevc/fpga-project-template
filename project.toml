@@ -1,0 +1,21 @@
+[project]
+name = "fpga_template"
+top  = "top"
+part = "xc7a35tcpg236-1"   # Arty A7-35T
+
+# Modules are listed in dependency order (dependencies first).
+# Each module directory must contain a manifest.toml.
+modules = [
+    "hdl/top",
+]
+
+[synth]
+strategy = "Vivado Synthesis Defaults"
+
+[impl]
+strategy  = "Vivado Implementation Defaults"
+build_dir = "impl"
+
+# Global Verilator flags applied to all simulation targets.
+[sim]
+verilator_flags = ["-Wall", "--timing"]

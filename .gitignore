@@ -1,0 +1,33 @@
+# Build artifacts
+impl/
+**/sim/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Vivado
+*.jou
+*.log
+*.str
+*.xpr
+*.bit
+*.ltx
+*.dcp
+*.rpt
+.Xil/
+*.runs/
+*.srcs/
+*.cache/
+*.hw/
+*.ip_user_files/
+
+# Verilator
+*.vcd
+*.fst
+obj_dir/
+
+# OS
+.DS_Store
+Thumbs.db

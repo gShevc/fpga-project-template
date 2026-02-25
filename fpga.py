@@ -4,6 +4,7 @@
 Replaces the Makefile. All commands dispatch to scripts/ internally.
 
 Usage:
+    python fpga.py new <name> [--deps mod1 mod2]
     python fpga.py sim [target] [-m module] [--trace] [--clean]
     python fpga.py lint [target] [-m module]
     python fpga.py synth [--gui]
@@ -73,6 +74,13 @@ def cmd_bit(args):
     return run_script("build.py", fwd)
 
 
+def cmd_new(args):
+    fwd = [args.name]
+    if args.deps:
+        fwd += ["--deps"] + args.deps
+    return run_script("new_module.py", fwd)
+
+
 def cmd_clean(args):
     root = Path(__file__).resolve().parent
     # Clean build/
@@ -101,6 +109,12 @@ def main():
         description="FPGA project build and simulation tool",
     )
     sub = parser.add_subparsers(dest="command", required=True)
+
+    # new
+    p = sub.add_parser("new", help="Create a new HDL module")
+    p.add_argument("name", help="Module name (e.g. uart, spi, blinker)")
+    p.add_argument("--deps", nargs="*", default=[], help="Module dependencies")
+    p.set_defaults(func=cmd_new)
 
     # sim
     p = sub.add_parser("sim", help="Run simulation")
